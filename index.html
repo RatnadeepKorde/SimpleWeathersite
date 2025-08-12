@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Weather Test</title>
+</head>
+<body>
+  <h1>Weather Checker</h1>
+  <input id="city" placeholder="Enter city">
+  <button onclick="getWeather()">Get Weather</button>
+  <div id="result"></div>
+  <script>
+    const API_KEY = 'edde6479e411f9e3d442634563ca63cb';
+
+    function getWeather() {
+      const city = document.getElementById('city').value;
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
+
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          if (data.cod === 200) {
+            document.getElementById('result').innerHTML = `
+              <p>Temp: ${data.main.temp} °C</p>
+              <p>${data.weather[0].description}</p>
+            `;
+          } else {
+            document.getElementById('result').textContent = data.message;
+          }
+        })
+        .catch(() => {
+          document.getElementById('result').textContent = 'Request failed.';
+        });
+    }
+  </script>
+</body>
+</html>
